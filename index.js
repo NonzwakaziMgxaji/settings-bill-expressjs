@@ -41,10 +41,20 @@ moment().format();
 
 //Create a route
 app.get('/', function(req, res){
-   
+   let className = "";
+
+   if(settingsBill.hasReachedWarningLevel()){
+       className = "warning"
+   }
+
+   if(settingsBill.hasReachedCriticalLevel()){
+       className = "danger"
+   }
+
     res.render('index', {
         settings: settingsBill.getSettings(),
-        totals: settingsBill.totals()
+        totals: settingsBill.totals(),
+        class: className
     });    
 });
 
