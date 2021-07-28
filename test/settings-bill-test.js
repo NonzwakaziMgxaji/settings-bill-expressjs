@@ -20,7 +20,6 @@ describe('settings-bill', function(){
         }, settingsBill.getSettings())
     });
 
-
     it('should be able to record the number of calls made', function(){
         settingsBill.recordAction('call');
         settingsBill.recordAction('call');
@@ -52,7 +51,6 @@ describe('settings-bill', function(){
         assert.equal(8.00, settingsBill.totals().callTotal);
         assert.equal(4.00, settingsBill.totals().smsTotal);
         assert.equal(12.00, settingsBill.totals().grandTotal);
-
     });
 
     it('should know when warning level reached', function(){
@@ -87,6 +85,5 @@ describe('settings-bill', function(){
         settingsBill.recordAction('sms');
 
         assert.equal(true, settingsBill.hasReachedCriticalLevel());
-
     });
 });
