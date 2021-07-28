@@ -24,10 +24,6 @@ const handlebarSetup = exphbs({
 app.engine('handlebars', handlebarSetup);
 app.set('view engine', 'handlebars');
 
-//Configure the express-handlebars module as middleware
-// app.engine('handlebars', exphbs({defaultLayout: 'main'}));
-// app.set('view engine', 'handlebars');
-
 app.use(express.static('public'));
 
 //set up bodyParser
@@ -36,7 +32,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-var moment = require('moment'); // require
+var moment = require('moment');
 moment().format(); 
 
 //Create a route
@@ -59,8 +55,6 @@ app.get('/', function(req, res){
 });
 
 app.post('/settings', function(req, res){
-    // console.log(req.body);
-
     settingsBill.setSettings({
         callCost: req.body.callCost,
         smsCost: req.body.smsCost,
@@ -73,8 +67,6 @@ app.post('/settings', function(req, res){
 });
 
 app.post('/action', function(req, res){
-    // console.log(req.body.actionType);
-
 //capture the call type to add
     settingsBill.recordAction(req.body.actionType)
 
@@ -93,9 +85,7 @@ app.get('/actions', function(req, res){
 app.get('/actions/:actionType', function(req, res){
     const actionType = req.params.actionType;
     res.render('actions', {actions: settingsBill.actionsFor(actionType)});
-    
 });
-
 
 //make port number configurable
 const PORT = process.env.PORT || 3011;
