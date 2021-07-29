@@ -3,11 +3,11 @@ module.exports = function SettingsBill() {
     let smsCost;
     let callCost;
     let warningLevel;
-    let criticalLevel; 
+    let criticalLevel;
 
     let actionList = [];
 
-    function setSettings (settings) {
+    function setSettings(settings) {
         smsCost = Number(settings.smsCost);
         callCost = Number(settings.callCost);
         warningLevel = settings.warningLevel;
@@ -15,7 +15,7 @@ module.exports = function SettingsBill() {
     }
 
     function getSettings
-    () {
+        () {
         return {
             smsCost,
             callCost,
@@ -27,25 +27,27 @@ module.exports = function SettingsBill() {
     function recordAction(action) {
 
         let cost = 0;
-        if (action === 'sms' && !hasReachedCriticalLevel()){
+        if (action === 'sms' && !hasReachedCriticalLevel()) {
             cost = smsCost;
         }
-        else if (action === 'call' && !hasReachedCriticalLevel()){
+        else if (action === 'call' && !hasReachedCriticalLevel()) {
             cost = callCost;
         }
 
-        actionList.push({
-            type: action,
-            cost,
-            timestamp: new Date()
-        });
+        if (cost > 0) {
+            actionList.push({
+                type: action,
+                cost,
+                timestamp: new Date()
+            });
+        }
     }
 
-    function actions(){
+    function actions() {
         return actionList;
     }
 
-    function actionsFor(type){
+    function actionsFor(type) {
         const filteredActions = [];
 
         // loop through all the entries in the action list 
@@ -57,10 +59,7 @@ module.exports = function SettingsBill() {
                 filteredActions.push(action);
             }
         }
-
         return filteredActions;
-
-        // return actionList.filter((action) => action.type === type);
     }
 
     function getTotal(type) {
@@ -75,13 +74,6 @@ module.exports = function SettingsBill() {
             }
         }
         return total;
-
-        // the short way using reduce and arrow functions
-
-        // return actionList.reduce((total, action) => { 
-        //     let val = action.type === type ? action.cost : 0;
-        //     return total + val;
-        // }, 0);
     }
 
     function grandTotal() {
@@ -89,24 +81,24 @@ module.exports = function SettingsBill() {
     }
 
     function totals() {
-        let smsTotal = getTotal('sms')
-        let callTotal = getTotal('call')
+        let smsTotal = getTotal('sms').toFixed(2)
+        let callTotal = getTotal('call').toFixed(2)
         return {
             smsTotal,
             callTotal,
-            grandTotal : grandTotal()
+            grandTotal: grandTotal().toFixed(2)
         }
     }
 
-    function hasReachedWarningLevel(){
+    function hasReachedWarningLevel() {
         const total = grandTotal();
-        const reachedWarningLevel = total >= warningLevel 
+        const reachedWarningLevel = total >= warningLevel
             && total < criticalLevel;
 
         return reachedWarningLevel;
     }
 
-    function hasReachedCriticalLevel(){
+    function hasReachedCriticalLevel() {
         const total = grandTotal();
         return total >= criticalLevel;
     }

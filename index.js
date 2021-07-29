@@ -69,7 +69,6 @@ app.post('/settings', function(req, res){
 app.post('/action', function(req, res){
 //capture the call type to add
     settingsBill.recordAction(req.body.actionType)
-
     res.redirect('/');
 });
 
@@ -92,5 +91,5 @@ const PORT = process.env.PORT || 3011;
 
 //starts server to listen on port 3011 for connections
 app.listen(PORT, function(){
-    console.log('App started at port:', PORT);
+    console.log('App started at port no.:', PORT);
 });
